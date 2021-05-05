@@ -16,6 +16,8 @@ sendButton.addEventListener('click', () => {
     sendMessage(data)
 
     messageField.value = ""
+
+    messageField.focus()
   } 
 })
 
@@ -27,6 +29,8 @@ socket.on('sendMessage', (data) => {
   h3.classList.add("message");
 
   messageContainer.appendChild(h3)
+
+  messageContainer.scrollTop = messageContainer.scrollHeight
 })
 
 document.addEventListener('keydown', event => {
@@ -54,5 +58,9 @@ function sendMessage(data)
 
   messageContainer.appendChild(h3)
 
+  messageContainer.scrollTop = messageContainer.scrollHeight
+
   socket.emit('message', data)
 }
+
+messageField.focus()
