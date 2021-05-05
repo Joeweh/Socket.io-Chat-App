@@ -54,6 +54,23 @@
   background-color: darkgray; 
 }
 
+.send-file-button {
+  width: 50%;
+  height: 7.5vh;
+  outline: none;
+  background-color: transparent;
+  border: 2px solid black;
+  border-radius: 10px;
+  transition: 0.5s ease-in-out;
+  font-size: 15px;
+}
+
+.send-file-button:hover {
+  cursor: pointer;
+  color: white;
+  background-color: darkgray; 
+}
+
 .message {
   margin-left: 2%;
   font-family: Roboto;

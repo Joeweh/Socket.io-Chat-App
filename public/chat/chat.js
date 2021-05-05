@@ -63,4 +63,6 @@ function sendMessage(data)
   socket.emit('message', data)
 }
 
+socket.emit("join server", localStorage.getItem("username"))
+
 messageField.focus()
