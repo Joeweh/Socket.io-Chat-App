@@ -8,7 +8,7 @@ sendButton.addEventListener('click', () => {
   if (messageField.value !== "")
   {
     let data = {
-      author: "",
+      author: localStorage.getItem("username"),
       body: messageField.value,
       timestamp: ""
     } 
@@ -24,7 +24,7 @@ sendButton.addEventListener('click', () => {
 socket.on('sendMessage', (data) => {
   var h3 = document.createElement('h3');
   
-  h3.appendChild(document.createTextNode("Inbound: " + data.body));
+  h3.appendChild(document.createTextNode(data.author + ": " + data.body));
   
   h3.classList.add("message");
 
@@ -37,7 +37,7 @@ document.addEventListener('keydown', event => {
   if (event.keyCode === 13 && messageField.value !== "")
   {
     let data = {
-      author: "",
+      author: localStorage.getItem("username"),
       body: messageField.value,
       timestamp: ""
     } 
@@ -52,7 +52,7 @@ function sendMessage(data)
 {
   var h3 = document.createElement('h3');
   
-  h3.appendChild(document.createTextNode("Outbound: " + data.body));
+  h3.appendChild(document.createTextNode(localStorage.getItem("username") + ": " + data.body));
   
   h3.classList.add("message");
 
