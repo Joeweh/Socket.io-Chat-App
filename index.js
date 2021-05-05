@@ -17,16 +17,22 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html')
 });
 
-io.on('connection', (socket) => {
+io.on('connection', socket => {
   socket.on("join server", (username) => {
     users.push({
       id: socket.id,
       username: username 
     })
   })
+  // broadcast data to specific room
+  // socket.to('some room').emit('some event')
+  socket.on("join room", (room) => {
+    socket.join(room.name)
+    
+  })
   
   socket.on('message', (data) => {
-    socket.broadcast.emit("sendMessage", data)
+    io.emit("sendMessage", data)
   })
 
   socket.on('disconnect', () => {
