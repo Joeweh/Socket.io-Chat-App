@@ -58,6 +58,12 @@ document.addEventListener('keydown', event => {
   }
 })
 
+if (localStorage.getItem("username") == null)
+{
+  window.location.pathname = '/index.html'
+}
+
+
 socket.emit("join server", localStorage.getItem("username"))
 
 messageField.focus()

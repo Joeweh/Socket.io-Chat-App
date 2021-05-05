@@ -14,7 +14,7 @@ app.use(express.static('public/setup'))
 app.use(express.static('public/utils'))
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html')
+  res.sendFile(__dirname + '/public/setup/index.html')
 });
 
 io.on('connection', socket => {
