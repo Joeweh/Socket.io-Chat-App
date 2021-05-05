@@ -19,16 +19,19 @@ app.get('/', (req, res) => {
 
 io.on('connection', socket => {
   socket.on("join server", (username) => {
-    users.push({
+    const user = {
       id: socket.id,
       username: username 
-    })
+    }
+    
+    users.push(user)
+
+    io.emit("update users", users)
   })
   // broadcast data to specific room
   // socket.to('some room').emit('some event')
   socket.on("join room", (room) => {
-    socket.join(room.name)
-    
+    //socket.join(room.name)
   })
   
   socket.on('message', (data) => {
@@ -36,7 +39,18 @@ io.on('connection', socket => {
   })
 
   socket.on('disconnect', () => {
+    const self = {
+      id: socket.id,
+    }
+
+    const data = {
+      self: self,
+      users: users
+    }
+
     users = users.filter(u => u.id !== socket.id)
+
+    socket.broadcast.emit("update users", users)
   })
 });
 

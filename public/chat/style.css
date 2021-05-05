@@ -1,49 +1,41 @@
+body {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .message-container {
-  width: 100%;
+  flex: 3;
   height: 65vh;
   overflow-y: scroll;
   overflow-wrap: break-word;
   border: 3px solid black;
 }
 
-.message-control-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-top: 2.5%;
-  margin-bottom: 2.5%;
-}
-
 .message-field {
-  width: 50%;
+  flex: 4;
   height: 30%;
   outline: none;
   font-size: 17px;
-  border-radius: 5px;
   padding: 12px 20px;
   opacity: 0.8;
-  border: 2px solid black;
+  border-top: 0px solid black;
+  border-bottom: 3px solid black;
+  border-left: 3px solid black;
+  border-right: 3px solid black;
   letter-spacing: 1.5;
   resize: none;
 }
 
-.send-button-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-top: 2.5%;
-  margin-bottom: 2.5%;
-}
-
 .send-button {
-  width: 50%;
-  height: 7.5vh;
+  flex: 1;
   outline: none;
   background-color: transparent;
-  border: 2px solid black;
-  border-radius: 10px;
+  border-top: none;
+  border-left: none;
+  border-bottom: 3px solid black;
+  border-right: 3px solid black;
   transition: 0.5s ease-in-out;
   font-size: 15px;
 }
@@ -54,24 +46,43 @@
   background-color: darkgray; 
 }
 
-.send-file-button {
-  width: 50%;
-  height: 7.5vh;
-  outline: none;
-  background-color: transparent;
-  border: 2px solid black;
-  border-radius: 10px;
-  transition: 0.5s ease-in-out;
-  font-size: 15px;
-}
-
-.send-file-button:hover {
-  cursor: pointer;
-  color: white;
-  background-color: darkgray; 
-}
-
 .message {
   margin-left: 2%;
   font-family: Roboto;
+}
+
+.user-list {
+  flex: 1;
+  height: 65vh;
+  overflow-y: scroll;
+  overflow-wrap: break-word;
+  border: 3px solid black;
+}
+
+.user {
+  text-align: center;
+  font-family: Roboto;
+}
+
+.chat-container {
+  display: flex;
+}
+
+.header-container {
+  display: flex;
+  width: 100%;
+}
+
+.user-heading {
+  flex: 1;
+  text-align: center;
+}
+
+.message-field-container {
+  display: flex;
+}
+
+.message-heading {
+  flex: 3;
+  text-align: center;
 }
