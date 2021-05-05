@@ -12,7 +12,7 @@ sendButton.addEventListener('click', () => {
       body: messageField.value,
       timestamp: ""
     } 
-
+    
     sendMessage(data)
 
     messageField.value = ""
@@ -24,18 +24,20 @@ socket.on('sendMessage', (data) => {
   
   h3.appendChild(document.createTextNode("Inbound: " + data.body));
   
+  h3.classList.add("message");
+
   messageContainer.appendChild(h3)
 })
 
 document.addEventListener('keydown', event => {
-  if (event.keyCode === 13)
+  if (event.keyCode === 13 && messageField.value !== "")
   {
     let data = {
       author: "",
       body: messageField.value,
       timestamp: ""
     } 
-    
+  
     sendMessage(data)
 
     messageField.value = ""
@@ -44,11 +46,13 @@ document.addEventListener('keydown', event => {
 
 function sendMessage(data)
 {
-  var h1 = document.createElement('h3');
+  var h3 = document.createElement('h3');
   
-  h1.appendChild(document.createTextNode("Outbound: " + data.body));
+  h3.appendChild(document.createTextNode("Outbound: " + data.body));
   
-  messageContainer.appendChild(h1)
+  h3.classList.add("message");
+
+  messageContainer.appendChild(h3)
 
   socket.emit('message', data)
 }

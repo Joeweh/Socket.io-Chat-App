@@ -6,6 +6,8 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const port = process.env.PORT || 3000
 
+const sockets = []
+
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
@@ -13,9 +15,14 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log("connected")
+  sockets.push(socket.id)
+  
   socket.on('message', (data) => {
     socket.broadcast.emit("sendMessage", data)
+  })
+
+  socket.on('disconnect', () => {
+    sockets.splice(sockets.indexOf(socket.id), 1)
   })
 });
 
