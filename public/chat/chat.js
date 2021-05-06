@@ -24,6 +24,7 @@ sendButton.addEventListener('click', () => {
 
 function getCurrentTime()
 {
+  date = new Date()
   time = ""
 
   if (date.getHours() > 12)
