@@ -6,7 +6,7 @@ const userList = document.getElementById('userList')
 var socket = io.connect('/')
 
 sendButton.addEventListener('click', () => {
-  if (messageField.value !== "")
+  if (cleanString(messageField.value) !== "")
   {
     let data = {
       author: localStorage.getItem("username"),
@@ -63,7 +63,7 @@ socket.on('sendMessage', (data) => {
 })
 
 document.addEventListener('keydown', event => {
-  if (event.keyCode === 13 && messageField.value !== "")
+  if (event.keyCode === 13 && cleanString(messageField.value) !== "")
   {
     let data = {
       author: localStorage.getItem("username"),
@@ -76,6 +76,19 @@ document.addEventListener('keydown', event => {
     messageField.value = ""
   }
 })
+
+function cleanString(input) {
+  let validInput = "";
+  
+  for (var i = 0; i < input.length; i++) 
+  {
+    if (input.charCodeAt(i) <= 127) 
+    {
+      validInput += input.charAt(i);
+    }
+  }
+  return validInput;
+}
 
 socket.on("update users", (users) => {
   while (userList.firstChild) 
