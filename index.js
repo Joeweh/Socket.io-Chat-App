@@ -1,3 +1,5 @@
+let userScript = require("./utils/users.js")
+
 const express = require('express')
 const app = express()
 const http = require('http')
@@ -18,32 +20,29 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', socket => {
-  socket.on("join", (username) => {
-    const user = {
-      id: socket.id,
-      username: username 
-    }
-    
-    users.push(user)
+  socket.on("join", (username, room) => {
+    let user = userScript.userJoin(socket.id, username, room)
 
-    socket.emit("load users", users)
+    socket.join(user.room)
 
-    socket.broadcast.emit("add user", user)
-  })
-  // broadcast data to specific room
-  // socket.to('some room').emit('some event')
-  socket.on("join room", (room) => {
-    //socket.join(room.name)
+    socket.emit("load users", userScript.getRoomUsers(user.room))
+
+    socket.to(user.room).emit("add user", user)
   })
   
   socket.on('send message', (message) => {
-    socket.broadcast.emit("recieve message", message)
+    const user = userScript.getCurrentUser(socket.id);
+
+    socket.to(user.room).emit("recieve message", message)
   })
 
   socket.on('disconnect', () => {
-    users = users.filter(u => u.id !== socket.id)
+    const user = userScript.userLeave(socket.id);
 
-    socket.broadcast.emit("remove user", users)
+    if (user) 
+    {
+      socket.to(user.room).emit("remove user", userScript.getRoomUsers(user.room))
+    }
   })
 });
 

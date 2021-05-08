@@ -9,7 +9,10 @@
   <script id="setupScript" src="setup.js" defer></script>
 </head>
 <body>
-  <input class="name-field" maxlength="15" placeholder="Enter Name (1-15 characters)" id="nameField" type="text" autocomplete="false"></input>
-  <button class="chat-button" id="chatButton">Start Chatting</button>
+  <div class="input-container">
+    <input class="form-field name-field" maxlength="20" placeholder="Enter Name (1-20 characters)" id="nameField" type="text" autocomplete="false"></input>
+    <input class="form-field room-field" maxlength="20" placeholder="Enter Room (1-20 characters)" id="roomField" autocomplete="false"></input>
+    <button class="chat-button" id="chatButton">Start Chatting</button>
+  </div>
 </body>
 </html>

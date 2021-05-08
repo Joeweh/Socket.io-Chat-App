@@ -1,17 +1,18 @@
 const messageContainer = document.getElementById('messageContainer')
 const messageField = document.getElementById('messageField')
 const sendButton = document.getElementById('sendButton')
+const leaveButton = document.getElementById('leaveButton')
 const userList = document.getElementById('userList')
 
 let socket = io.connect('/')
 
 document.getElementById('chatScript').addEventListener('load', () => {
-  if (localStorage.getItem("username") == null)
+  if (localStorage.getItem("username") === null || localStorage.getItem("room") === null)
   {
     window.location.pathname = '/index.html'
   }
 
-  socket.emit("join", localStorage.getItem("username"))
+  socket.emit("join", localStorage.getItem("username"), localStorage.getItem("room"))
 })
 
 sendButton.addEventListener('click', () => {
@@ -25,6 +26,12 @@ sendButton.addEventListener('click', () => {
 
     updateUI()
   } 
+})
+
+leaveButton.addEventListener('click', () => {
+  localStorage.removeItem("username")
+  localStorage.removeItem("room")
+  window.location.pathname = '/index.html'
 })
 
 document.addEventListener('keydown', event => {
@@ -90,11 +97,12 @@ function appendUser(user)
   userList.appendChild(h2)
 }
 
-function formatUser(id, username)
+function formatUser(id, username, room)
 {
   return {
     id: id,
-    username: username
+    username: username,
+    room: room
   }
 }
 

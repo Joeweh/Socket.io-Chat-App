@@ -46,6 +46,24 @@ body {
   background-color: darkgray; 
 }
 
+.leave-button {
+  flex: 1;
+  outline: none;
+  background-color: transparent;
+  border-top: none;
+  border-left: none;
+  border-bottom: 3px solid black;
+  border-right: 3px solid black;
+  transition: 0.5s ease-in-out;
+  font-size: 15px;
+}
+
+.leave-button:hover {
+  cursor: pointer;
+  color: white;
+  background-color: darkgray; 
+}
+
 .message {
   margin-left: 2%;
   font-family: Roboto;
