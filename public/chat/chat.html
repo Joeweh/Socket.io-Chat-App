@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="../images/zoom-logo.png"/>
   <link rel="stylesheet" type="text/css" href="style.css">
   <script src="/socket.io/socket.io.js" defer></script>
-  <script src="chat.js" defer></script>
+  <script id="chatScript" src="chat.js" defer></script>
 </head>
 <body>
   <div class="header-container">
@@ -18,7 +18,7 @@
     <div class="user-list" id="userList"></div>
     <div id="messageContainer" class="message-container"></div>
   </div>
-  <div class="message-field-container">
+  <div class="input-container">
     <input placeholder="Enter Message Here" autocomplete="false" class="message-field" id="messageField" type="text"></input>
     <button class="send-button" id="sendButton">Send</button>
   </div>

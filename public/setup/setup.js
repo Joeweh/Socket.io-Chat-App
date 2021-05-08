@@ -2,7 +2,7 @@ const nameField = document.getElementById('nameField')
 const chatButton = document.getElementById('chatButton')
 
 chatButton.addEventListener('click', () => {
-  let name = cleanString(nameField.value)
+  let name = nameField.value.trim()
   
   if (name !== "")
   {
@@ -11,20 +11,9 @@ chatButton.addEventListener('click', () => {
   }
 })
 
-function cleanString(input) {
-  let validInput = "";
-  
-  for (var i = 0; i < input.length; i++) 
+document.getElementById('setupScript').addEventListener('load', () => {
+  if (localStorage.getItem("username") !== null)
   {
-    if (input.charCodeAt(i) <= 127) 
-    {
-      validInput += input.charAt(i);
-    }
+    window.location.pathname = '/chat.html'
   }
-  return validInput;
-}
-
-if (localStorage.getItem("username") !== null)
-{
-  window.location.pathname = '/chat.html'
-}
+})

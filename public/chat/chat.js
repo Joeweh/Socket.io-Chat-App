@@ -3,116 +3,135 @@ const messageField = document.getElementById('messageField')
 const sendButton = document.getElementById('sendButton')
 const userList = document.getElementById('userList')
 
-var socket = io.connect('/')
+let socket = io.connect('/')
+
+document.getElementById('chatScript').addEventListener('load', () => {
+  if (localStorage.getItem("username") == null)
+  {
+    window.location.pathname = '/index.html'
+  }
+
+  socket.emit("join", localStorage.getItem("username"))
+})
 
 sendButton.addEventListener('click', () => {
-  if (cleanString(messageField.value) !== "")
+  if (messageField.value.trim() !== "")
   {
-    let data = {
-      author: localStorage.getItem("username"),
-      body: messageField.value,
-      timestamp: getCurrentTime()
-    } 
+    const message = formatMessage(localStorage.getItem("username"), messageField.value.trim(), getCurrentTime())
+
+    appendMessage(message)
     
-    socket.emit('message', data)
+    sendMessage(message)
 
-    messageField.value = ""
-
-    messageField.focus()
+    updateUI()
   } 
 })
 
-function getCurrentTime()
+document.addEventListener('keydown', event => {
+  if (event.keyCode === 13 && messageField.value.trim() !== "")
+  {
+    const message = formatMessage(localStorage.getItem("username"), messageField.value.trim(), getCurrentTime())
+
+    appendMessage(message)
+
+    sendMessage(message)
+
+    updateUI()
+  }
+})
+
+function sendMessage(message)
 {
-  date = new Date()
-  time = ""
-
-  if (date.getHours() > 12)
-  {
-    time += date.getHours() - 12 + ":"
-  }
-
-  else
-  {
-    time += date.getHours() + ":"
-  }
-
-  if (date.getMinutes() > 9)
-  {
-    time += date.getMinutes()
-  }
-
-  else
-  {
-    time += "0" + date.getMinutes()
-  }
-
-  return time;
+  socket.emit('send message', message)
 }
 
-socket.on('sendMessage', (data) => {
-  var h2 = document.createElement('h2');
+function formatMessage(author, content, timeStamp)
+{
+  return {
+    author: author,
+    body: content,
+    timeStamp: timeStamp
+  }
+}
+
+function appendMessage(message)
+{
+  let h2 = document.createElement('h2');
   
-  h2.appendChild(document.createTextNode(data.timestamp + " - " + data.author + ": " + data.body));
+  h2.appendChild(document.createTextNode(message.timeStamp + " - " + message.author + ": " + message.body));
   
   h2.classList.add("message");
 
   messageContainer.appendChild(h2)
+}
+
+function getCurrentTime()
+{
+  time = ""
+  date = new Date()
+
+  time += date.getHours() > 12 ? date.getHours() - 12 + ":" : date.getHours() + ":" 
+
+  time += date.getMinutes() > 9 ? date.getMinutes() : "0" + date.getMinutes()
+
+  time += date.getHours() > 12 ? "pm" : "am"
+  
+  return time
+}
+
+function appendUser(user)
+{
+  let h2 = document.createElement('h2');
+  
+  h2.appendChild(document.createTextNode(user.username));
+  
+  h2.classList.add("user");
+
+  userList.appendChild(h2)
+}
+
+function formatUser(id, username)
+{
+  return {
+    id: id,
+    username: username
+  }
+}
+
+function updateUI()
+{
+  messageField.value = ""
+
+  messageField.focus()
+
+  messageContainer.scrollTop = messageContainer.scrollHeight
+}
+
+socket.on('recieve message', (message) => {
+  appendMessage(message)
 
   messageContainer.scrollTop = messageContainer.scrollHeight
 })
 
-document.addEventListener('keydown', event => {
-  if (event.keyCode === 13 && cleanString(messageField.value) !== "")
+socket.on("load users", (users) => {
+  for (i = 0; i < users.length; i++)
   {
-    let data = {
-      author: localStorage.getItem("username"),
-      body: messageField.value,
-      timestamp: getCurrentTime()
-    } 
-  
-    socket.emit('message', data)
-
-    messageField.value = ""
+    appendUser(users[i])
   }
 })
 
-function cleanString(input) {
-  let validInput = "";
-  
-  for (var i = 0; i < input.length; i++) 
-  {
-    if (input.charCodeAt(i) <= 127) 
-    {
-      validInput += input.charAt(i);
-    }
-  }
-  return validInput;
-}
-
-socket.on("update users", (users) => {
+socket.on("remove user", (users) => {
   while (userList.firstChild) 
   {
     userList.removeChild(userList.firstChild);
   }
-  
+
   for (i = 0; i < users.length; i++)
   {
-    var h2 = document.createElement('h2');
-  
-    h2.appendChild(document.createTextNode(users[i].username));
-  
-    h2.classList.add("user");
-
-    userList.appendChild(h2)
+    appendUser(users[i])
   }
 })
 
-if (localStorage.getItem("username") == null)
-{
-  window.location.pathname = '/index.html'
-}
-
-socket.emit("join server", localStorage.getItem("username"))
-
-messageField.focus()
+socket.on("add user", (user) => {
+  appendUser(user)
+})

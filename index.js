@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', socket => {
-  socket.on("join server", (username) => {
+  socket.on("join", (username) => {
     const user = {
       id: socket.id,
       username: username 
@@ -26,7 +26,9 @@ io.on('connection', socket => {
     
     users.push(user)
 
-    io.emit("update users", users)
+    socket.emit("load users", users)
+
+    socket.broadcast.emit("add user", user)
   })
   // broadcast data to specific room
   // socket.to('some room').emit('some event')
@@ -34,23 +36,14 @@ io.on('connection', socket => {
     //socket.join(room.name)
   })
   
-  socket.on('message', (data) => {
-    io.emit("sendMessage", data)
+  socket.on('send message', (message) => {
+    socket.broadcast.emit("recieve message", message)
   })
 
   socket.on('disconnect', () => {
-    const self = {
-      id: socket.id,
-    }
-
-    const data = {
-      self: self,
-      users: users
-    }
-
     users = users.filter(u => u.id !== socket.id)
 
-    socket.broadcast.emit("update users", users)
+    socket.broadcast.emit("remove user", users)
   })
 });
 
