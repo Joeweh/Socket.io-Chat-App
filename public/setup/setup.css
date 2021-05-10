@@ -1,16 +1,22 @@
-body {
+.input-container {
   display: flex;
+  width: 100vw;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.form-field {
-  display: block;
+.form {
+  width: 25vw;
 }
 
-.input-container {
-  display: flex;
-  width: 25vw;
-  flex-direction: column;
-  justify-content: space-evenly;
+.rooms-heading {
+  font-family: Roboto;
+  text-align: center;
+}
+
+.room {
+  font-family: Roboto;
+  font-size: 20px;
+  text-align: center;
 }

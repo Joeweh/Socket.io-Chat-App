@@ -6,13 +6,17 @@
   <title>Low Budget Chat</title>
   <link rel="icon" type="image/png" href="../images/zoom-logo.png"/>
   <link rel="stylesheet" type="text/css" href="setup.css">
+  <script src="/socket.io/socket.io.js" defer></script>
   <script id="setupScript" src="setup.js" defer></script>
 </head>
 <body>
   <div class="input-container">
-    <input class="form-field name-field" maxlength="20" placeholder="Enter Name (1-20 characters)" id="nameField" type="text" autocomplete="false"></input>
-    <input class="form-field room-field" maxlength="20" placeholder="Enter Room (1-20 characters)" id="roomField" autocomplete="false"></input>
-    <button class="chat-button" id="chatButton">Start Chatting</button>
+    <input class="form name-field" maxlength="20" placeholder="Enter Name (1-20 characters)" id="nameField" type="text" autocomplete="false"></input>
+    <input class="form room-field" maxlength="20" placeholder="Enter Room (1-20 characters)" id="roomField" autocomplete="false"></input>
+    <button class="form chat-button" id="chatButton">Start Chatting</button>
   </div>
+  <br/>
+  <h1 class="rooms-heading">Open Rooms</h1>
+  <div id="roomContainer"></div>
 </body>
 </html>

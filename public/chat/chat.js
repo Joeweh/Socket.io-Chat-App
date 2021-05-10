@@ -4,7 +4,7 @@ const sendButton = document.getElementById('sendButton')
 const leaveButton = document.getElementById('leaveButton')
 const userList = document.getElementById('userList')
 
-let socket = io.connect('/')
+let socket = io.connect('/chat')
 
 document.getElementById('chatScript').addEventListener('load', () => {
   if (localStorage.getItem("username") === null || localStorage.getItem("room") === null)
@@ -17,12 +17,8 @@ document.getElementById('chatScript').addEventListener('load', () => {
 
 sendButton.addEventListener('click', () => {
   if (messageField.value.trim() !== "")
-  {
-    const message = formatMessage(localStorage.getItem("username"), messageField.value.trim(), getCurrentTime())
-
-    appendMessage(message)
-    
-    sendMessage(message)
+  {    
+    sendMessage(localStorage.getItem("username"), messageField.value.trim())
 
     updateUI()
   } 
@@ -37,28 +33,15 @@ leaveButton.addEventListener('click', () => {
 document.addEventListener('keydown', event => {
   if (event.keyCode === 13 && messageField.value.trim() !== "")
   {
-    const message = formatMessage(localStorage.getItem("username"), messageField.value.trim(), getCurrentTime())
-
-    appendMessage(message)
-
-    sendMessage(message)
+    sendMessage(localStorage.getItem("username"), messageField.value.trim())
 
     updateUI()
   }
 })
 
-function sendMessage(message)
+function sendMessage(author, content)
 {
-  socket.emit('send message', message)
-}
-
-function formatMessage(author, content, timeStamp)
-{
-  return {
-    author: author,
-    body: content,
-    timeStamp: timeStamp
-  }
+  socket.emit('send message', author, content)
 }
 
 function appendMessage(message)
@@ -70,20 +53,6 @@ function appendMessage(message)
   h2.classList.add("message");
 
   messageContainer.appendChild(h2)
-}
-
-function getCurrentTime()
-{
-  time = ""
-  date = new Date()
-
-  time += date.getHours() > 12 ? date.getHours() - 12 + ":" : date.getHours() + ":" 
-
-  time += date.getMinutes() > 9 ? date.getMinutes() : "0" + date.getMinutes()
-
-  time += date.getHours() > 12 ? "pm" : "am"
-  
-  return time
 }
 
 function appendUser(user)
