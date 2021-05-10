@@ -1,0 +1,51 @@
+body {
+  overflow: hidden;
+}
+
+.rooms-heading {
+  font-family: Roboto;
+  text-align: center;
+}
+
+.room-container {
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.room {
+  font-family: Roboto;
+  font-size: 20px;
+  text-align: center;
+}
+
+.fab-container {
+  position: fixed;
+  right: 5vw;
+  bottom: 5vh;
+}
+
+.fab {
+  width: 75px;
+  height: 75px;
+  border-radius: 50%;
+  outline: none;
+  background-color: transparent;
+  border: 2px solid black;
+  transition: 0.5s ease-in-out;
+}
+
+.fab:hover {
+  cursor: pointer;
+  color: white;
+  background-color: darkgray; 
+}
+
+.fab-icon {
+  margin-top: 9%;
+  margin-left: 2.75%;
+}
+
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }

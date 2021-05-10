@@ -7,9 +7,14 @@ const userList = document.getElementById('userList')
 let socket = io.connect('/chat')
 
 document.getElementById('chatScript').addEventListener('load', () => {
-  if (localStorage.getItem("username") === null || localStorage.getItem("room") === null)
+  if (localStorage.getItem("username") === null)
   {
-    window.location.pathname = '/index.html'
+    window.location.pathname = '/login.html'
+  }
+
+  else if (localStorage.getItem("room") === null)
+  {
+    window.location.pathname = '/join.html'
   }
 
   socket.emit("join", localStorage.getItem("username"), localStorage.getItem("room"))
@@ -25,9 +30,8 @@ sendButton.addEventListener('click', () => {
 })
 
 leaveButton.addEventListener('click', () => {
-  localStorage.removeItem("username")
   localStorage.removeItem("room")
-  window.location.pathname = '/index.html'
+  window.location.pathname = '/join.html'
 })
 
 document.addEventListener('keydown', event => {

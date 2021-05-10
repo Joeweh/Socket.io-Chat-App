@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Low Budget Chat</title>
+  <link rel="icon" type="image/png" href="../images/zoom-logo.png"/>
+  <link rel="stylesheet" type="text/css" href="join.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="/socket.io/socket.io.js" defer></script>
+  <script id="joinScript" src="join.js" defer></script>
+</head>
+<body>
+  <h1 class="rooms-heading">Open Rooms</h1>
+  <div class="room-container" id="roomContainer"></div>
+  <div class="fab-container">
+    <button id="FAB" class="fab">
+      <span class="material-icons fab-icon md-48">add</span>
+    </button>
+  </div>
+</body>
+</html>

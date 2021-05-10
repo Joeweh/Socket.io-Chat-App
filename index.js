@@ -10,6 +10,7 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const port = process.env.PORT || 3000
 
+const defaultNamespace = io.of("/")
 const chatNamespace = io.of("/chat")
 
 let rooms = []
@@ -17,9 +18,12 @@ let rooms = []
 app.use(express.static('public/chat'))
 app.use(express.static('public/setup'))
 app.use(express.static('public/utils'))
+app.use(express.static('public/join-room'))
+app.use(express.static('public/create-room'))
+app.use(express.static('public/login'))
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/setup/index.html')
+  res.sendFile(__dirname + '/public/login/login.html')
 });
 
 io.on('connection', socket => {
@@ -33,7 +37,7 @@ chatNamespace.on('connection', socket => {
     if (rooms.findIndex(room => room === user.room) === -1)
     {
       rooms.push(room)
-      io.of("/").emit("add room", room)
+      defaultNamespace.emit("add room", room)
     }
 
     socket.join(user.room)
@@ -58,7 +62,7 @@ chatNamespace.on('connection', socket => {
       {
         rooms = rooms.filter(room => room !== user.room);
 
-        io.of("/").emit("remove room", rooms)
+        defaultNamespace.emit("remove room", rooms)
       }
 
       socket.to(user.room).emit("remove user", userScript.getRoomUsers(user.room))
