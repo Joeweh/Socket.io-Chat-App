@@ -14,7 +14,6 @@ const chatNamespace = io.of("/chat")
 
 let rooms = []
 
-app.use(express.static('public'))
 app.use(express.static('public/chat'))
 app.use(express.static('public/setup'))
 app.use(express.static('public/utils'))
@@ -33,7 +32,6 @@ chatNamespace.on('connection', socket => {
 
     if (rooms.findIndex(room => room === user.room) === -1)
     {
-      console.log("true")
       rooms.push(room)
       io.of("/").emit("add room", room)
     }
