@@ -45,6 +45,8 @@ chatNamespace.on('connection', socket => {
     socket.emit("load users", userScript.getRoomUsers(user.room))
 
     socket.to(user.room).emit("add user", user)
+
+    socket.to(user.room).emit("send message", "Server", username + " has joined the room")
   })
   
   socket.on('send message', (author, content) => {
@@ -66,6 +68,7 @@ chatNamespace.on('connection', socket => {
       }
 
       socket.to(user.room).emit("remove user", userScript.getRoomUsers(user.room))
+      socket.to(user.room).emit("send message", "Server", user.username + " has left the room")
     }
   })
 });
