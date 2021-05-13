@@ -1,5 +1,6 @@
 let userScript = require("./utils/users.js")
 let messageScript = require("./utils/message.js")
+let roomScript = require("./utils/rooms.js")
 
 const moment = require('moment')
 const express = require('express')
@@ -9,8 +10,6 @@ const server = http.createServer(app)
 const { Server } = require("socket.io");
 const io = new Server(server);
 const port = process.env.PORT || 3000
-
-let rooms = []
 
 app.use(express.static('public/chat'))
 app.use(express.static('public/setup'))
@@ -23,15 +22,28 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/login/login.html')
 });
 
+const chatNamespace = io.of('/chat')
+
 io.on('connection', socket => {
+  socket.on("join", () => {
+    socket.emit("load rooms", roomScript.getRooms())
+  })
+})
+
+
+chatNamespace.on('connection', socket => {
   socket.on("join", (username, room) => {
     let user = userScript.userJoin(socket.id, username, room)
 
-    if (rooms.findIndex(room => room === user.room) === -1)
+    if (!roomScript.isOpen(room))
     {
-      rooms.push(room)
+      roomScript.createRoom(room)
+      socket.broadcast.emit("add room", room)
       io.emit("add room", room)
+      console.log("added")
     }
+
+    socket.emit("load rooms", roomScript.getRooms())
 
     socket.join(user.room)
 
@@ -43,7 +55,7 @@ io.on('connection', socket => {
   })
   
   socket.on('send message', (author, content) => {
-    io.to(userScript.getCurrentUser(socket.id).room).emit("recieve message", messageScript.formatMessage(author, content))
+    chatNamespace.to(userScript.getCurrentUser(socket.id).room).emit("recieve message", messageScript.formatMessage(author, content))
   })
 
   socket.on('disconnect', () => {
@@ -53,11 +65,13 @@ io.on('connection', socket => {
     {
       socket.leave(user.room)
 
-      if (userScript.getRoomUsers(user.room).length <= 0)
+      if (userScript.getRoomUsers().length <= 0)
       {
-        rooms = rooms.filter(room => room !== user.room);
+        roomScript.destroyRoom(user.room)
 
-        io.emit("remove room", rooms)
+        chatNamespace.emit("remove room", roomScript.getRooms())
+        io.emit("remove room", roomScript.getRooms())
+        console.log("deleted")
       }
 
       socket.to(user.room).emit("remove user", userScript.getRoomUsers(user.room))

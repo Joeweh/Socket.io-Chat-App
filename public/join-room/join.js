@@ -57,4 +57,5 @@ document.getElementById('joinScript').addEventListener('load', () => {
   {
     window.location.pathname = "/chat.html"
   }
+  socket.emit("join")
 })

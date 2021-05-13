@@ -3,8 +3,9 @@ const messageField = document.getElementById('messageField')
 const sendButton = document.getElementById('sendButton')
 const leaveButton = document.getElementById('leaveButton')
 const userList = document.getElementById('userList')
+const roomContaienr = document.getElementById('roomContainer')
 
-let socket = io.connect('/')
+let socket = io.connect('/chat')
 
 document.getElementById('chatScript').addEventListener('load', () => {
   if (localStorage.getItem("username") === null)
@@ -88,6 +89,22 @@ function updateUI()
   messageContainer.scrollTop = messageContainer.scrollHeight
 }
 
+function appendRoom(room)
+{
+  let button = document.createElement("BUTTON");
+ 
+  button.innerHTML = room;
+
+  button.addEventListener('click', () => {
+    localStorage.setItem("room", button.innerHTML)
+    window.location.pathname = "/chat.html"
+  })
+
+  button.classList.add("room")
+
+  roomContainer.appendChild(button);
+}
+
 socket.on('recieve message', (message) => {
   appendMessage(message)
 
@@ -115,4 +132,27 @@ socket.on("remove user", (users) => {
 
 socket.on("add user", (user) => {
   appendUser(user)
+})
+
+socket.on("load rooms", (rooms) => {
+  for (i = 0; i < rooms.length; i++)
+  {
+    appendRoom(rooms[i])
+  }
+})
+
+socket.on("remove room", (rooms) => {
+  while (roomContainer.firstChild)
+  {
+    roomContainer.removeChild(roomContainer.firstChild)
+  }
+
+  for (i = 0; i < rooms.length; i++)
+  {
+    appendRoom(rooms[i])
+  }
+})
+
+socket.on("add room", (room) => {
+  appendRoom(room)
 })
