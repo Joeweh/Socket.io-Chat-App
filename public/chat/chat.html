@@ -5,18 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Low Budget Chat</title>
   <link rel="icon" type="image/png" href="../images/zoom-logo.png"/>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="chat.css">
   <script src="/socket.io/socket.io.js" defer></script>
   <script id="chatScript" src="chat.js" defer></script>
 </head>
 <body>
   <div class="header-container">
-    <h1 class="user-heading">Online Users</h1>
+    <h1 class="room-heading">Channels</h1>
     <h1 class="message-heading">Messages</h1>
+    <h1 class="user-heading">Users</h1>
   </div>
   <div class="chat-container" id="chatContainer">
-    <div class="user-list" id="userList"></div>
+    <div class="room-container" id="roomContainer"></div>
     <div id="messageContainer" class="message-container"></div>
+    <div class="user-list" id="userList"></div>
   </div>
   <div class="input-container">
     <input placeholder="Enter Message Here" autocomplete="false" class="message-field" id="messageField" type="text"></input>

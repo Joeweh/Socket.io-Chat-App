@@ -4,7 +4,7 @@ const sendButton = document.getElementById('sendButton')
 const leaveButton = document.getElementById('leaveButton')
 const userList = document.getElementById('userList')
 
-let socket = io.connect('/chat')
+let socket = io.connect('/')
 
 document.getElementById('chatScript').addEventListener('load', () => {
   if (localStorage.getItem("username") === null)

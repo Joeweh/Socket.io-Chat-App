@@ -6,7 +6,7 @@ body {
 }
 
 .message-container {
-  flex: 3;
+  flex: 4;
   height: 65vh;
   overflow-y: scroll;
   overflow-wrap: break-word;
@@ -102,7 +102,22 @@ body {
 }
 
 .message-heading {
-  flex: 3;
+  flex: 4;
   text-align: center;
   font-family: Roboto;
 }
+
+.room-container {
+  flex: 1;
+  height: 65vh;
+  overflow-y: scroll;
+  overflow-wrap: break-word;
+  border: 3px solid black;
+}
+
+.room-heading {
+  flex: 1;
+  text-align: center;
+  font-family: Roboto;
+}
+

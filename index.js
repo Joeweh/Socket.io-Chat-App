@@ -10,9 +10,6 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const port = process.env.PORT || 3000
 
-const defaultNamespace = io.of("/")
-const chatNamespace = io.of("/chat")
-
 let rooms = []
 
 app.use(express.static('public/chat'))
@@ -27,17 +24,13 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', socket => {
-  socket.emit("load rooms", rooms)
-})
-
-chatNamespace.on('connection', socket => {
   socket.on("join", (username, room) => {
     let user = userScript.userJoin(socket.id, username, room)
 
     if (rooms.findIndex(room => room === user.room) === -1)
     {
       rooms.push(room)
-      defaultNamespace.emit("add room", room)
+      io.emit("add room", room)
     }
 
     socket.join(user.room)
@@ -50,7 +43,7 @@ chatNamespace.on('connection', socket => {
   })
   
   socket.on('send message', (author, content) => {
-    chatNamespace.to(userScript.getCurrentUser(socket.id).room).emit("recieve message", messageScript.formatMessage(author, content))
+    io.to(userScript.getCurrentUser(socket.id).room).emit("recieve message", messageScript.formatMessage(author, content))
   })
 
   socket.on('disconnect', () => {
@@ -64,7 +57,7 @@ chatNamespace.on('connection', socket => {
       {
         rooms = rooms.filter(room => room !== user.room);
 
-        defaultNamespace.emit("remove room", rooms)
+        io.emit("remove room", rooms)
       }
 
       socket.to(user.room).emit("remove user", userScript.getRoomUsers(user.room))
